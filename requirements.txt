@@ -1,0 +1,4 @@
+rotten_tomatoes_client
+bs4
+re
+urllib
