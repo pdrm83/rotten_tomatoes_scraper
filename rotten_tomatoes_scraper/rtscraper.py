@@ -96,3 +96,21 @@ class RTScraper:
         return movie_metadata, movie_genre
 
 
+def extract_actresses_names():
+    url_actresses = 'https://en.wikipedia.org/wiki/Category:American_film_actresses'
+    page_actresses = urlopen(url_actresses)
+    soup = BeautifulSoup(page_actresses, "lxml")
+    data = soup.find_all('div', class_='mw-category-group')
+    actresses = data[8].text.split('\n')
+    actresses = [re.sub(r'\s\([^)]*\)', '', actress) for actress in actresses[1:]]
+    return actresses
+
+
+def extract_actors_names():
+    url_actors = 'https://en.wikipedia.org/wiki/Category:American_male_film_actors'
+    page_actors = urlopen(url_actors)
+    soup = BeautifulSoup(page_actors, "lxml")
+    data = soup.find_all('div', class_='mw-category-group')
+    actors = data[1].text.split('\n')
+    actors = [re.sub(r'\s\([^)]*\)', '', actor) for actor in actors[1:]]
+    return actors
