@@ -1,49 +1,61 @@
-# 2-Opt Search Algorithm 
+# Rotten Tomatoes Scraper 
 
-In optimization, 2-opt is a simple local search algorithm with special swapping mechanism that suits well to solve the 
-traveling salesman problem. This algorithm is sensitive to the initial point of search, i.e., its final results get 
-changed by different initial points. 2-opt runs very fast such that a tsp with 120 cities can be solved in less than 
-5 sec on the intel core i7. To get a more reliable result, you should run the 2-opt with different randomized initial 
-points for enough number of times. One more thing, the travelling salesman problem has many applications in real world 
-such as logistic planning or DNA sequencing. So, having a fast and simple method to solve the TSP is valuable. 
+You can extract information about movies and actors that are listed on the Rotten Tomatoes website using this service. 
+Each movie has different metadata such as *Rating*, *Genre*, *Box Office*, or *Studio*. Note that the **Genre** 
+has 20+ subcategories that also gives you more granular information on a movie. These metadata can be helpful for many 
+purposes; however, I could not find a clean API to provide you all these metadata. For an actor you can extract movies 
+listed in **highest-rated** or **filmography** sections depending on your need. Finally, I used the BeautifulSoup 
+package to parse HTML documents obtained by the HTTP request-response in this library. 
 
- 
+
 ## Library
 The library requires the following libraries:
 
-* numpy
-* math
-* time
-* random2
-* itertools
+* rotten_tomatoes_client
+* bs4
+* re
+* urllib
 
 ## Install
 
 It can be installed using pip:
 ```python
-pip install py2opt
+pip install rotten_tomatoes_scraper
 ```
 
 ## Usage
-
-To use this library, you must have a distance matrix showing the pair distance among all nodes. Then, the first thing 
-to do is create an instance of the RouteFinder class. 
+You can use this library to extract the complete list of movies that an actor played by calling `extract_movies` method
+and using `section='filmography'`. Plus, you can also extract the list of top ranked movies by using the same method and
+`section='highest'`. 
 
 ```python
-from py2opt.routefinder import RouteFinder
+from rotten_tomatoes_scraper.rtscraper import RTScraper
 
-nodes = ['A', 'B', 'C', 'D']
-dist_mat = [[0, 2, 5, 3], [2, 0, 7, 2], [5, 7, 0, 1], [3, 9, 1, 0 ]]
-route_finder = RouteFinder(dist_mat, nodes)
-best_distance, best_route = route_finder.solve()
+rts = RTScraper()
+movie_titles = rts.extract_movies('jack nicholson', section='highest')
 
-print(best_distance)
-11
-print(best_route)
-['A', 'D', 'C', 'B']
+print(movie_titles)
+['Kubrick by Kubrick (Kubrick par Kubrick)', 'On a Clear Day You Can See Forever', 'The Shooting']
 ```
-The solver finds out the optimum order (re: minimum total distance traveled) in which the nodes must be visited along 
-with the total distance traveled.
 
-And that's pretty much it!
+If you want to find out what movie genres an actor has played in, you can, first, extract the list of movies that he or 
+she played in using `extract_movies` method. Then, you just need to feed in the list of movies to the `extract_genre` 
+method to receive a dictionary that keys are movie genres and values are the number oof movies with that genre in which 
+the actor played. You can easily use the code below.
+
+```python
+from rotten_tomatoes_scraper.rtscraper import RTScraper
+
+rts = RTScraper()
+movie_titles = rts.extract_movies('meryl streep', section='highest')
+movie_genres = rts.extract_genre(movie_titles)
+
+print(movie_genres)
+{'Documentary': 2, 'Comedy': 1, 'ScienceFiction&Fantasy': 1, 'Drama': 1, 'Romance': 1}
+```
+
+This library doesn't give you a full access to all the metadata that you may find in Rotten Tomatoes website. However,
+you can eaily use it to extract the most important ones.
+
+And, that's pretty much it!
 
