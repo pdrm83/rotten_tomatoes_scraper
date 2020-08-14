@@ -1,16 +1,19 @@
 from bs4 import BeautifulSoup
 import re
+import requests
 from urllib.request import urlopen
-
-from rotten_tomatoes_client import RottenTomatoesClient
 
 
 class RTScraper:
+
+    BASE_URL = "https://www.rottentomatoes.com/api/private/v2.0"
+    SEARCH_URL = "{base_url}/search".format(base_url=BASE_URL)
+
     def __init__(self):
         pass
 
     def extract_movies(self, celebrity_name, section='filmography'):
-        selected_section = self.__extract_section(celebrity_name, section=section)
+        selected_section = self.extract_section(celebrity_name, section=section)
         movie_titles = []
         if section == 'highest':
             for i in range(len(selected_section)):
@@ -28,9 +31,9 @@ class RTScraper:
         output = dict()
         try:
             for movie_title in movie_titles:
-                res = RottenTomatoesClient.search(term=movie_title)
+                res = self.search(term=movie_title)
                 url_movie = 'https://www.rottentomatoes.com' + res['movies'][0]['url']
-                _, movie_genres = self.__extract_metadata(url_movie=url_movie)
+                _, movie_genres = self.extract_metadata(url_movie=url_movie)
                 for movie_genre in movie_genres:
                     if movie_genre in output:
                         output[str(movie_genre)] += 1
@@ -42,9 +45,8 @@ class RTScraper:
 
         return output
 
-    @staticmethod
-    def __extract_section(celebrity_name, section):
-        res = RottenTomatoesClient.search(term=celebrity_name)
+    def extract_section(self, celebrity_name, section):
+        res = self.search(term=celebrity_name)
         selected_section = []
         try:
             if section == 'highest':
@@ -64,8 +66,7 @@ class RTScraper:
 
         return selected_section
 
-    @staticmethod
-    def __extract_metadata(url_movie, columns=('Rating', 'Genre', 'Box Office', 'Studio')):
+    def extract_metadata(self, url_movie, columns=('Rating', 'Genre', 'Box Office', 'Studio')):
         page_movie = urlopen(url_movie)
         soup = BeautifulSoup(page_movie, "lxml")
 
@@ -95,22 +96,8 @@ class RTScraper:
 
         return movie_metadata, movie_genre
 
-
-def extract_actresses_names():
-    url_actresses = 'https://en.wikipedia.org/wiki/Category:American_film_actresses'
-    page_actresses = urlopen(url_actresses)
-    soup = BeautifulSoup(page_actresses, "lxml")
-    data = soup.find_all('div', class_='mw-category-group')
-    actresses = data[8].text.split('\n')
-    actresses = [re.sub(r'\s\([^)]*\)', '', actress) for actress in actresses[1:]]
-    return actresses
-
-
-def extract_actors_names():
-    url_actors = 'https://en.wikipedia.org/wiki/Category:American_male_film_actors'
-    page_actors = urlopen(url_actors)
-    soup = BeautifulSoup(page_actors, "lxml")
-    data = soup.find_all('div', class_='mw-category-group')
-    actors = data[1].text.split('\n')
-    actors = [re.sub(r'\s\([^)]*\)', '', actor) for actor in actors[1:]]
-    return actors
+    @staticmethod
+    def search(term, limit=10):
+        r = requests.get(url=RTScraper.SEARCH_URL, params={"q": term, "limit": limit})
+        r.raise_for_status()
+        return r.json()

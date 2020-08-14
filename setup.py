@@ -10,7 +10,7 @@ README = (HERE / "README.md").read_text()
 # This call to setup() does all the work
 setup(
     name="rotten_tomatoes_scraper",
-    version="1.0.1",
+    version="1.1.0",
     description="How to extract movie genres from Rotten Tomatoes website",
     long_description=README,
     long_description_content_type="text/markdown",
@@ -25,7 +25,7 @@ setup(
     ],
     packages=["rotten_tomatoes_scraper"],
     include_package_data=True,
-    install_requires=['re', 'bs4', 'urllib', 'rotten_tomatoes_client'],
+    install_requires=['re', 'bs4', 'urllib', 'requests'],
     entry_points={
         "console_scripts": [
             "pdrm83=rotten_tomatoes_scraper.__main__:main",

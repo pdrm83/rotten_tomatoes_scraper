@@ -11,9 +11,9 @@ package to parse HTML documents obtained by the HTTP request-response in this li
 ## Library
 The library requires the following libraries:
 
-* rotten_tomatoes_client
 * bs4
 * re
+* requests
 * urllib
 
 ## Install
@@ -29,7 +29,7 @@ and using `section='filmography'`. Plus, you can also extract the list of top ra
 `section='highest'`. 
 
 ```python
-from rotten_tomatoes_scraper.rtscraper import RTScraper
+from rotten_tomatoes_scraper.rt_scraper import RTScraper
 
 rts = RTScraper()
 movie_titles = rts.extract_movies('jack nicholson', section='highest')
@@ -44,7 +44,7 @@ method to receive a dictionary that keys are movie genres and values are the num
 the actor played. You can easily use the code below.
 
 ```python
-from rotten_tomatoes_scraper.rtscraper import RTScraper
+from rotten_tomatoes_scraper.rt_scraper import RTScraper
 
 rts = RTScraper()
 movie_titles = rts.extract_movies('meryl streep', section='highest')
@@ -55,7 +55,7 @@ print(movie_genres)
 ```
 
 This library doesn't give you a full access to all the metadata that you may find in Rotten Tomatoes website. However,
-you can eaily use it to extract the most important ones.
+you can easily use it to extract the most important ones.
 
 And, that's pretty much it!
 
