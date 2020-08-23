@@ -4,8 +4,8 @@ You can extract information about movies and actors that are listed on the Rotte
 Each movie has different metadata such as *Rating*, *Genre*, *Box Office*, or *Studio*. Note that the **Genre** 
 has 20+ subcategories that also gives you more granular information on a movie. These metadata can be helpful for many 
 purposes; however, I could not find a clean API to provide you all these metadata. For an actor you can extract movies 
-listed in **highest-rated** or **filmography** sections depending on your need. Finally, I used the BeautifulSoup 
-package to parse HTML documents obtained by the HTTP request-response in this library. 
+listed in **highest-rated** or **filmography** sections depending on your need. I used the BeautifulSoup 
+package to parse HTML documents obtained by the HTTP response in this library. 
 
 
 ## Library
@@ -20,7 +20,7 @@ The library requires the following libraries:
 
 It can be installed using pip:
 ```python
-pip install rotten_tomatoes_scraper
+pip3 install rotten_tomatoes_scraper
 ```
 
 ## Usage

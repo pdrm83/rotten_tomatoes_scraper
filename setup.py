@@ -10,8 +10,8 @@ README = (HERE / "README.md").read_text()
 # This call to setup() does all the work
 setup(
     name="rotten_tomatoes_scraper",
-    version="1.1.0",
-    description="How to extract movie genres from Rotten Tomatoes website",
+    version="1.1.1",
+    description="How to scrape Rotten Tomatoes website using an easy interface.",
     long_description=README,
     long_description_content_type="text/markdown",
     url="https://github.com/pdrm83/rotten_tomatoes_scraper",
