@@ -1,3 +1,5 @@
+[![license](https://img.shields.io/github/license/DAVFoundation/captain-n3m0.svg?style=flat-square)](https://github.com/DAVFoundation/captain-n3m0/blob/master/LICENSE)
+
 # Rotten Tomatoes Scraper 
 
 You can extract information about movies and actors that are listed on the Rotten Tomatoes website using this service. 
