@@ -40,7 +40,7 @@ print(movie_titles)
 
 You can also use *MovieScraper* to extract metadata of movies. If you want to find out what movie genres an actor has 
 participated, you can, first, extract the list of movies that he or she participated using `CelebrityScraper`. Then, you 
-must instantiate the `MovieScraper` and feed the list of movies to the `extract_metada` method. You can feed `movie_url` 
+must instantiate the `MovieScraper` and feed the `movie_title` to the `extract_metada` method. You can feed `movie_url` 
 or `movie_title` to extract the movie metadata. You can see the code below. 
 
 ```python
