@@ -2,34 +2,7 @@ from bs4 import BeautifulSoup
 import re
 from urllib.request import urlopen
 
-from rotten_tomatoes_scraper.rt_scraper import RTScraper
-
-
-def test_extract_movies_01():
-    rts = RTScraper()
-    movie_titles = rts.extract_movies('jack nicholson', section='filmography')
-    assert 'The Departed' in movie_titles
-
-
-def test_extract_movies_02():
-    rts = RTScraper()
-    movie_titles = rts.extract_movies('jack nicholson', section='highest')
-    assert 'The Shooting' in movie_titles
-
-
-def test_extract_genre_01():
-    rts = RTScraper()
-    movie_titles = rts.extract_movies('meryl streep', section='highest')
-    movie_genres = rts.extract_genre(movie_titles)
-    print(movie_genres)
-    assert 'Documentary' in movie_genres.keys()
-
-
-def test_extract_genre_02():
-    rts = RTScraper()
-    movie_titles = rts.extract_movies('meryl streep', section='filmography')
-    movie_genres = rts.extract_genre(movie_titles)
-    print(movie_genres)
+from rotten_tomatoes_scraper.rt_scraper import CelebrityScraper, MovieScraper
 
 
 class WikiParser:
@@ -55,3 +28,59 @@ class WikiParser:
         actors = data[1].text.split('\n')
         actors = [re.sub(r'\s\([^)]*\)', '', actor) for actor in actors[1:]]
         return actors
+
+
+def test_celebrity_scraper_01():
+    celebrity_scraper = CelebrityScraper('jack nicholson')
+    celebrity_scraper.extract_metadata(section='filmography')
+    movie_titles = celebrity_scraper.metadata['movie_titles']
+    assert 'The Departed' in movie_titles
+
+
+def test_celebrity_scraper_02():
+    celebrity_scraper = CelebrityScraper('meryl streep')
+    celebrity_scraper.extract_metadata(section='highest')
+    movie_titles = celebrity_scraper.metadata['movie_titles']
+    assert 'Manhattan' in movie_titles
+
+
+def test_celebrity_scraper_03():
+    wiki_parser = WikiParser()
+    actresses = wiki_parser.extract_actresses_names()
+    # Meryl_Streep
+    celebrity_scraper = CelebrityScraper(actresses[2])
+    celebrity_scraper.extract_metadata(section='highest')
+    movie_titles = celebrity_scraper.metadata['movie_titles']
+    assert 'Manhattan' in movie_titles
+
+
+def test_movie_scraper_01():
+    movie_scraper = MovieScraper('Manhattan')
+    movie_scraper.extract_metadata()
+    movie_genres = movie_scraper.movie_genre
+    assert 'Comedy' in movie_genres
+
+
+def test_movie_scraper_02():
+    movie_scraper = MovieScraper('Manhattan')
+    movie_scraper.extract_metadata()
+    movie_genres = movie_scraper.movie_genre
+    assert 'Kids&Family' in movie_genres
+
+
+def test_movie_scraper_03():
+    movie_scraper = MovieScraper('Manhattan')
+    movie_scraper.url = 'https://www.rottentomatoes.com/m/manhattan'
+    movie_scraper.extract_metadata()
+    movie_genres = movie_scraper.movie_genre
+    assert 'Kids&Family' not in movie_genres
+
+
+def test_movie_scraper_04():
+    movie_scraper = MovieScraper('MARRIAGE STORY' and '2019')
+    movie_scraper.extract_metadata()
+    movie_genres = movie_scraper.movie_genre
+    print(movie_genres)
+
+
+test_movie_scraper_04()
