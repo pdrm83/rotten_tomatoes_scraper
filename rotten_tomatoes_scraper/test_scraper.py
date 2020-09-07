@@ -31,14 +31,14 @@ class WikiParser:
 
 
 def test_celebrity_scraper_01():
-    celebrity_scraper = CelebrityScraper('jack nicholson')
+    celebrity_scraper = CelebrityScraper(celebrity_name='jack nicholson')
     celebrity_scraper.extract_metadata(section='filmography')
     movie_titles = celebrity_scraper.metadata['movie_titles']
     assert 'The Departed' in movie_titles
 
 
 def test_celebrity_scraper_02():
-    celebrity_scraper = CelebrityScraper('meryl streep')
+    celebrity_scraper = CelebrityScraper(celebrity_name='meryl streep')
     celebrity_scraper.extract_metadata(section='highest')
     movie_titles = celebrity_scraper.metadata['movie_titles']
     assert 'Manhattan' in movie_titles
@@ -47,40 +47,44 @@ def test_celebrity_scraper_02():
 def test_celebrity_scraper_03():
     wiki_parser = WikiParser()
     actresses = wiki_parser.extract_actresses_names()
-    # Meryl_Streep
-    celebrity_scraper = CelebrityScraper(actresses[2])
+    celebrity_scraper = CelebrityScraper(celebrity_name=actresses[2])
     celebrity_scraper.extract_metadata(section='highest')
     movie_titles = celebrity_scraper.metadata['movie_titles']
     assert 'Manhattan' in movie_titles
 
 
 def test_movie_scraper_01():
-    movie_scraper = MovieScraper('Manhattan')
+    movie_scraper = MovieScraper(movie_title='Manhattan')
     movie_scraper.extract_metadata()
     movie_genres = movie_scraper.movie_genre
     assert 'Comedy' in movie_genres
 
 
 def test_movie_scraper_02():
-    movie_scraper = MovieScraper('Manhattan')
+    movie_scraper = MovieScraper(movie_title='Manhattan')
     movie_scraper.extract_metadata()
     movie_genres = movie_scraper.movie_genre
     assert 'Kids&Family' in movie_genres
 
 
 def test_movie_scraper_03():
-    movie_scraper = MovieScraper('Manhattan')
-    movie_scraper.url = 'https://www.rottentomatoes.com/m/manhattan'
+    movie_url = 'https://www.rottentomatoes.com/m/manhattan'
+    movie_scraper = MovieScraper(movie_url=movie_url)
     movie_scraper.extract_metadata()
     movie_genres = movie_scraper.movie_genre
     assert 'Kids&Family' not in movie_genres
 
 
 def test_movie_scraper_04():
-    movie_scraper = MovieScraper('MARRIAGE STORY' and '2019')
+    movie_url = 'https://www.rottentomatoes.com/m/marriage_story_2019'
+    movie_scraper = MovieScraper(movie_url=movie_url)
     movie_scraper.extract_metadata()
-    movie_genres = movie_scraper.movie_genre
-    print(movie_genres)
+    print(movie_scraper.metadata)
 
 
-test_movie_scraper_04()
+def test_movie_scraper_05():
+    movie_scraper = MovieScraper(movie_title='VICKY CRISTINA BARCELONA')
+    movie_scraper.extract_metadata()
+    print(movie_scraper.metadata)
+
+test_movie_scraper_05()

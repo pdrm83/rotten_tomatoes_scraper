@@ -29,11 +29,14 @@ class RTScraper:
 
 
 class MovieScraper(RTScraper):
-    def __init__(self, movie_title):
+    def __init__(self, **kwargs):
         RTScraper.__init__(self)
-        self.movie_title = movie_title
         self.movie_genre = None
-        self.extract_url()
+        if 'movie_title' in kwargs.keys():
+            self.movie_title = kwargs['movie_title']
+            self.extract_url()
+        if 'movie_url' in kwargs.keys():
+            self.url = kwargs['movie_url']
 
     def extract_url(self):
         search_result = self.search(term=self.movie_title)
@@ -49,8 +52,8 @@ class MovieScraper(RTScraper):
 
         # Score
         score = soup.find_all('div', class_='mop-ratings-wrap__half')
-        movie_metadata['score_rotten'] = score[0].text.strip().replace('\n', '').split(' ')[0]
-        movie_metadata['score_audience'] = score[1].text.strip().replace('\n', '').split(' ')[0]
+        movie_metadata['Score_Rotten'] = score[0].text.strip().replace('\n', '').split(' ')[0]
+        movie_metadata['Score_Audience'] = score[1].text.strip().replace('\n', '').split(' ')[0]
 
         # Movie Info
         movie_info_section = soup.find_all('div', class_='media-body')
@@ -89,10 +92,13 @@ class MovieScraper(RTScraper):
 
 
 class CelebrityScraper(RTScraper):
-    def __init__(self, celebrity_name):
+    def __init__(self, **kwargs):
         RTScraper.__init__(self)
-        self.celebrity_name = celebrity_name
-        self.extract_url()
+        if 'celebrity_name' in kwargs.keys():
+            self.celebrity_name = kwargs['celebrity_name']
+            self.extract_url()
+        if 'celebrity_url' in kwargs.keys():
+            self.url = kwargs['celebrity_url']
 
     def extract_url(self):
         search_result = self.search(term=self.celebrity_name)
