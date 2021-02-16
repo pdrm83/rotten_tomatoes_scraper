@@ -57,17 +57,10 @@ def test_movie_scraper_01():
     movie_scraper = MovieScraper(movie_title='Manhattan')
     movie_scraper.extract_metadata()
     movie_genres = movie_scraper.movie_genre
-    assert 'Comedy' in movie_genres
+    assert 'Kids&Family' or 'kidsandfamily' in movie_genres
 
 
 def test_movie_scraper_02():
-    movie_scraper = MovieScraper(movie_title='Manhattan')
-    movie_scraper.extract_metadata()
-    movie_genres = movie_scraper.movie_genre
-    assert 'Kids&Family' in movie_genres
-
-
-def test_movie_scraper_03():
     movie_url = 'https://www.rottentomatoes.com/m/manhattan'
     movie_scraper = MovieScraper(movie_url=movie_url)
     movie_scraper.extract_metadata()
@@ -75,16 +68,16 @@ def test_movie_scraper_03():
     assert 'Kids&Family' not in movie_genres
 
 
-def test_movie_scraper_04():
+def test_movie_scraper_03():
     movie_url = 'https://www.rottentomatoes.com/m/marriage_story_2019'
     movie_scraper = MovieScraper(movie_url=movie_url)
     movie_scraper.extract_metadata()
     print(movie_scraper.metadata)
 
 
-def test_movie_scraper_05():
+def test_movie_scraper_04():
     movie_scraper = MovieScraper(movie_title='VICKY CRISTINA BARCELONA')
     movie_scraper.extract_metadata()
     print(movie_scraper.metadata)
 
-test_movie_scraper_05()
+test_celebrity_scraper_03()

@@ -51,9 +51,9 @@ class MovieScraper(RTScraper):
         soup = BeautifulSoup(page_movie, "lxml")
 
         # Score
-        score = soup.find_all('div', class_='mop-ratings-wrap__half')
-        movie_metadata['Score_Rotten'] = score[0].text.strip().replace('\n', '').split(' ')[0]
-        movie_metadata['Score_Audience'] = score[1].text.strip().replace('\n', '').split(' ')[0]
+        score = soup.find('score-board')
+        movie_metadata['Score_Rotten'] = score.attrs['tomatometerscore']
+        movie_metadata['Score_Audience'] = score.attrs['audiencescore']
 
         # Movie Info
         movie_info_section = soup.find_all('div', class_='media-body')

@@ -10,7 +10,7 @@ README = (HERE / "README.md").read_text()
 # This call to setup() does all the work
 setup(
     name="rotten_tomatoes_scraper",
-    version="1.1.4",
+    version="1.2",
     description="How to scrape Rotten Tomatoes website using an easy interface.",
     long_description=README,
     long_description_content_type="text/markdown",
@@ -25,7 +25,7 @@ setup(
     ],
     packages=["rotten_tomatoes_scraper"],
     include_package_data=True,
-    install_requires=['re', 'bs4', 'urllib', 'requests'],
+    install_requires=['bs4', 'requests', 'lxml'],
     entry_points={
         "console_scripts": [
             "pdrm83=rotten_tomatoes_scraper.__main__:main",
