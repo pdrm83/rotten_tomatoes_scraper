@@ -11,9 +11,8 @@ sections depending on your need. This module uses the BeautifulSoup package to p
 The module requires the following libraries:
 
 * bs4
-* re
 * requests
-* urllib
+* lxml
 
 Then, it can be installed using pip:
 ```python
@@ -35,7 +34,7 @@ celebrity_scraper.extract_metadata(section='highest')
 movie_titles = celebrity_scraper.metadata['movie_titles']
 
 print(movie_titles)
-['Kubrick by Kubrick (Kubrick par Kubrick)', 'On a Clear Day You Can See Forever', 'The Shooting']
+['On a Clear Day You Can See Forever', 'The Shooting', 'Chinatown', 'Broadcast News']
 ```
 
 You can also use *MovieScraper* to extract metadata of movies. If you want to find out what movie genres an actor has 
@@ -50,7 +49,7 @@ movie_scraper = MovieScraper(movie_title='VICKY CRISTINA BARCELONA')
 movie_scraper.extract_metadata()
 
 print(movie_scraper.metadata)
-{'Score_Rotten': '81%', 'Score_Audience': '74%', 'Rating': 'PG-13', 'Genre': ['Comedy', 'Drama', 'Romance'], 'Box Office': 23164041, 'Studio': 'The Weinstein Co.'}
+{'Score_Rotten': '81', 'Score_Audience': '74', 'Genre': ['comedy', 'drama', 'romance']}
 ```
 
 ```python
@@ -61,7 +60,7 @@ movie_scraper = MovieScraper(movie_url=movie_url)
 movie_scraper.extract_metadata()
 
 print(movie_scraper.metadata)
-{'Score_Rotten': '94%', 'Score_Audience': '85%', 'Rating': 'R', 'Genre': ['Drama'], 'Studio': 'Netflix'}
+{'Score_Rotten': '94', 'Score_Audience': '85', 'Genre': ['comedy', 'drama']}
 ```
 
 This module doesn't give you a full access to all the metadata that you may find in Rotten Tomatoes website. However,
