@@ -38,13 +38,11 @@ class TestRtParser(unittest.TestCase):
         movie_titles = celebrity_scraper.metadata['movie_titles']
         self.assertIn('The Departed', movie_titles)
 
-
     def test_celebrity_scraper_02(self):
         celebrity_scraper = CelebrityScraper(celebrity_name='meryl streep')
         celebrity_scraper.extract_metadata(section='highest')
         movie_titles = celebrity_scraper.metadata['movie_titles']
         self.assertIn('Manhattan', movie_titles)
-
 
     def test_celebrity_scraper_03(self):
         wiki_parser = WikiParser()
@@ -58,8 +56,7 @@ class TestRtParser(unittest.TestCase):
         movie_scraper = MovieScraper(movie_title='Manhattan')
         movie_scraper.extract_metadata()
         movie_genres = movie_scraper.movie_genre
-        self.assertIn('kidsandfamily', movie_genres)
-
+        self.assertIn('drama', movie_genres)
 
     def test_movie_scraper_02(self):
         movie_url = 'https://www.rottentomatoes.com/m/manhattan'
@@ -68,18 +65,17 @@ class TestRtParser(unittest.TestCase):
         movie_genres = movie_scraper.movie_genre
         self.assertNotIn('Kids&Family', movie_genres)
 
-
     def test_movie_scraper_03(self):
         movie_url = 'https://www.rottentomatoes.com/m/marriage_story_2019'
         movie_scraper = MovieScraper(movie_url=movie_url)
         movie_scraper.extract_metadata()
         self.assertEqual(movie_scraper.metadata['Rating'], 'R')
 
-
     def test_movie_scraper_04(self):
-        movie_scraper = MovieScraper(movie_title='VICKY CRISTINA BARCELONA')
+        movie_scraper = MovieScraper(movie_title='Vicky  Cristina Barcelona')
         movie_scraper.extract_metadata()
         print(movie_scraper.metadata)
+
 
 if __name__ == '__main__':
     unittest.main()

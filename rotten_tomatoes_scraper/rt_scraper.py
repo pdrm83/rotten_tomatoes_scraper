@@ -1,4 +1,5 @@
 from bs4 import BeautifulSoup
+import difflib
 import re
 import requests
 from urllib.request import urlopen
@@ -40,9 +41,16 @@ class MovieScraper(RTScraper):
 
     def extract_url(self):
         search_result = self.search(term=self.movie_title)
-        url_movie = 'https://www.rottentomatoes.com' + search_result['movies'][0]['url']
-        if len(search_result['movies']) > 1:
-            print('There are several movie records matching the search criteria.. The selected url is: {}'.format(url_movie))
+
+        movie_titles = []
+        for movie in search_result['movies']:
+            movie_titles.append(movie['name'])
+
+        closest = self.closest(self.movie_title, movie_titles)
+        for movie in search_result['movies']:
+            if movie['name'] == closest[0]:
+                url_movie = 'https://www.rottentomatoes.com' + movie['url']
+
         self.url = url_movie
 
     def extract_metadata(self, columns=('Rating', 'Genre', 'Box Office', 'Studio')):
@@ -78,6 +86,11 @@ class MovieScraper(RTScraper):
         self.movie_genre = self.extract_genre(self.metadata)
 
     @staticmethod
+    def closest(keyword, words):
+        closest_match = difflib.get_close_matches(keyword, words, cutoff=0.6)
+        return closest_match
+
+    @staticmethod
     def extract_genre(metadata):
         try:
             if 'Genre' in metadata:
@@ -111,7 +124,7 @@ class CelebrityScraper(RTScraper):
         selected_section = []
         try:
             if section == 'highest':
-                selected_section = soup.find_all('p', class_='celebrity-highest__info')
+                selected_section = soup.find_all('div', class_='posters-container')[0].text.split('\n')
             elif section == 'filmography':
                 selected_section = soup.find_all('tbody', class_='celebrity-filmography__tbody')[0]
         except IOError:
@@ -124,7 +137,8 @@ class CelebrityScraper(RTScraper):
         movie_titles = []
         if section == 'highest':
             for i in range(len(selected_section)):
-                movie_titles.append(selected_section[i].text.split('\n')[2].strip())
+                if selected_section[i].strip():
+                    movie_titles.append(selected_section[i].strip())
         elif section == 'filmography':
             soup_filmography = BeautifulSoup(str(selected_section), 'lxml')
             for h in soup_filmography.find_all('a'):
