@@ -45,7 +45,7 @@ or `movie_title` to extract the movie metadata. You can see the code below.
 ```python
 from rotten_tomatoes_scraper.rt_scraper import MovieScraper
 
-movie_scraper = MovieScraper(movie_title='VICKY CRISTINA BARCELONA')
+movie_scraper = MovieScraper(movie_title='Vicky Cristina Barcelona')
 movie_scraper.extract_metadata()
 
 print(movie_scraper.metadata)

@@ -72,7 +72,7 @@ class TestRtParser(unittest.TestCase):
         self.assertEqual(movie_scraper.metadata['Rating'], 'R')
 
     def test_movie_scraper_04(self):
-        movie_scraper = MovieScraper(movie_title='Vicky  Cristina Barcelona')
+        movie_scraper = MovieScraper(movie_title='Vicky Cristina Barcelona')
         movie_scraper.extract_metadata()
         print(movie_scraper.metadata)
 
