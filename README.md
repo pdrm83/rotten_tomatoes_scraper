@@ -20,11 +20,9 @@ pip3 install rotten_tomatoes_scraper
 ```
 
 ## Usage
-This module contains two classes: **MovieScraper** and **CelebrityScraper**.
+This module contains three classes: `CelebrityScraper`, `MovieScrape` and `DirectorScraper`.
 
-You can use *CelebrityScraper* to extract the complete list of movies that a celebrity participated by calling 
-`extract_metadata` method and using `section='filmography'`. Plus, you can also extract the list of top ranked movies 
-by using the same method and `section='highest'`. 
+- **CelebrityScraper**: You can use this class to extract the complete list of movies that a celebrity participated by calling `extract_metadata` method and using `section='filmography'`. Plus, you can also extract the list of top ranked movies by using the same method and `section='highest'`. 
 
 ```python
 from rotten_tomatoes_scraper.rt_scraper import CelebrityScraper
@@ -36,11 +34,11 @@ movie_titles = celebrity_scraper.metadata['movie_titles']
 print(movie_titles)
 ['On a Clear Day You Can See Forever', 'The Shooting', 'Chinatown', 'Broadcast News']
 ```
-
-You can also use *MovieScraper* to extract metadata of movies. If you want to find out what movie genres an actor has 
+&nbsp;
+- **MovieScraper**: You can use this class to extract metadata of movies. You can feed `movie_url` 
+or `movie_title` to extract the movie metadata. If you want to find out what movie genres an actor has 
 participated, you can, first, extract the list of movies that he or she participated using `CelebrityScraper`. Then, you 
-must instantiate the `MovieScraper` and feed the `movie_title` to the `extract_metada` method. You can feed `movie_url` 
-or `movie_title` to extract the movie metadata. You can see the code below. 
+must instantiate the `MovieScraper` and feed the `movie_title` to the `extract_metada` method.  You can see the code below. 
 
 ```python
 from rotten_tomatoes_scraper.rt_scraper import MovieScraper
@@ -62,6 +60,9 @@ movie_scraper.extract_metadata()
 print(movie_scraper.metadata)
 {'Score_Rotten': '94', 'Score_Audience': '85', 'Genre': ['comedy', 'drama']}
 ```
+&nbsp;
+- **DirectorScraper**:
+WIP
 
 This module doesn't give you a full access to all the metadata that you may find in Rotten Tomatoes website. However,
 you can easily use it to extract the most important ones.
