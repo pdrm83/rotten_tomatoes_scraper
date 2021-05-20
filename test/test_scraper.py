@@ -48,13 +48,20 @@ class TestRtParser(unittest.TestCase):
         celebrity_scraper.extract_metadata(section='filmography')
         movie_titles = celebrity_scraper.metadata['movie_titles']
         self.assertIn('The Departed', movie_titles)
-
+    
     def test_celebrity_scraper_02(self):
         celebrity_scraper = CelebrityScraper(celebrity_name='meryl streep')
         celebrity_scraper.extract_metadata(section='highest')
         movie_titles = celebrity_scraper.metadata['movie_titles']
         self.assertIn('Manhattan', movie_titles)
-
+    
+    def test_celebrity_scraper_03(self):
+        wiki_parser = WikiParser()
+        actresses = wiki_parser.extract_actresses_names()
+        celebrity_scraper = CelebrityScraper(celebrity_name=actresses[2])
+        celebrity_scraper.extract_metadata(section='highest')
+        movie_titles = celebrity_scraper.metadata['movie_titles']
+    
     def test_movie_scraper_01(self):
         movie_scraper = MovieScraper(movie_title='Manhattan')
         movie_scraper.extract_metadata()
