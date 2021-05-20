@@ -3,7 +3,7 @@ import re
 from urllib.request import urlopen
 import unittest
 
-from rt_scraper import CelebrityScraper, MovieScraper
+from rt_scraper import CelebrityScraper, MovieScraper, DirectorScraper
 
 
 class WikiParser:
@@ -29,6 +29,18 @@ class WikiParser:
         actors = data[1].text.split('\n')
         actors = [re.sub(r'\s\([^)]*\)', '', actor) for actor in actors[1:]]
         return actors
+    
+    @staticmethod
+    def extract_directors_names():
+        url_directors = 'https://en.wikipedia.org/wiki/Category:American_film_directors'
+        page_directors = urlopen(url_directors)
+        soup = BeautifulSoup(page_directors, "lxml")
+        first_link = soup.find('a', {'title':'Category:American film directors'}) 
+        data = first_link.find_next('div', class_='mw-category-group') 
+        directors = data.text.split('\n')
+        directors = [re.sub(r'\s\([^)]*\)', '', director) for director in directors[1:]]
+        return directors
+        
 
 
 class TestRtParser(unittest.TestCase):
@@ -76,6 +88,27 @@ class TestRtParser(unittest.TestCase):
         movie_scraper.extract_metadata()
         print(movie_scraper.metadata)
 
+    def test_director_scraper_01(self):
+        director_scraper = DirectorScraper(director_name='stanley kubrick')
+        director_scraper.extract_metadata()
+        movie_titles = director_scraper.metadata.keys()
+        self.assertIn('Eyes Wide Shut', movie_titles)
+        
+    def test_director_scraper_02(self):
+        director_scraper = DirectorScraper(director_url='https://www.rottentomatoes.com/celebrity/steve_spielberg')
+        director_scraper.extract_metadata()
+        movie_titles = director_scraper.metadata.keys()
+        self.assertIn('Jaws', movie_titles)
+        
+    def test_director_scraper_03(self):
+        wiki_parser = WikiParser()
+        directors = wiki_parser.extract_directors_names()
+        director = directors[directors.index('Kent Alterman')]
+        director_scraper = DirectorScraper(director_name = director)
+        director_scraper.extract_metadata()
+        movie_titles = director_scraper.metadata.keys()
+        self.assertIn('Semi-Pro', movie_titles)
+        
 
 if __name__ == '__main__':
     unittest.main()
