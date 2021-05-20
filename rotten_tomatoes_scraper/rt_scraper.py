@@ -48,6 +48,8 @@ class MovieScraper(RTScraper):
             movie_titles.append(movie['name'])
 
         closest = self.closest(self.movie_title, movie_titles)
+
+        url_movie = None
         for movie in search_result['movies']:
             if movie['name'] == closest[0]:
                 url_movie = 'https://www.rottentomatoes.com' + movie['url']
@@ -125,7 +127,7 @@ class CelebrityScraper(RTScraper):
         selected_section = []
         try:
             if section == 'highest':
-                selected_section = soup.find_all('div', class_='posters-container')[0].text.split('\n')
+                selected_section = soup.find_all('section', class_='dynamic-poster-list')[0].text.split('\n')
             elif section == 'filmography':
                 selected_section = soup.find_all('tbody', class_='celebrity-filmography__tbody')[0]
         except IOError:
@@ -140,6 +142,7 @@ class CelebrityScraper(RTScraper):
             for i in range(len(selected_section)):
                 if selected_section[i].strip():
                     movie_titles.append(selected_section[i].strip())
+            movie_titles.remove('Highest rated movies')
         elif section == 'filmography':
             soup_filmography = BeautifulSoup(str(selected_section), 'lxml')
             for h in soup_filmography.find_all('a'):
@@ -147,7 +150,8 @@ class CelebrityScraper(RTScraper):
                     movie_titles.append(h.text.strip())
                 except IOError:
                     pass
-        self.metadata['movie_titles'] = movie_titles
+
+        self.metadata['movie_titles'] = list(set(movie_titles))
     
     
 class DirectorScraper(RTScraper):
@@ -168,7 +172,7 @@ class DirectorScraper(RTScraper):
     
     def extract_metadata(self):
         try:
-            if (self.print):
+            if self.print:
                 try:
                     print(self.director_name, self.url)
                 except AttributeError:
@@ -181,6 +185,7 @@ class DirectorScraper(RTScraper):
             selected_section = soup.find_all('tbody', class_='celebrity-filmography__tbody')[0]
         except IOError:
             print('The parsing process returns an error.')
+
         soup_filmography = BeautifulSoup(str(selected_section), 'lxml')
         movie_metadata = defaultdict(dict)
         for each_row in soup_filmography.find_all('tr'):
