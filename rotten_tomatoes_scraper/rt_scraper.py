@@ -48,6 +48,8 @@ class MovieScraper(RTScraper):
             movie_titles.append(movie['name'])
 
         closest = self.closest(self.movie_title, movie_titles)
+
+        url_movie = None
         for movie in search_result['movies']:
             if movie['name'] == closest[0]:
                 url_movie = 'https://www.rottentomatoes.com' + movie['url']
@@ -168,7 +170,7 @@ class DirectorScraper(RTScraper):
     
     def extract_metadata(self):
         try:
-            if (self.print):
+            if self.print:
                 try:
                     print(self.director_name, self.url)
                 except AttributeError:
@@ -181,6 +183,7 @@ class DirectorScraper(RTScraper):
             selected_section = soup.find_all('tbody', class_='celebrity-filmography__tbody')[0]
         except IOError:
             print('The parsing process returns an error.')
+
         soup_filmography = BeautifulSoup(str(selected_section), 'lxml')
         movie_metadata = defaultdict(dict)
         for each_row in soup_filmography.find_all('tr'):

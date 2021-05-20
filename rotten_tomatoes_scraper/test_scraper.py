@@ -42,7 +42,6 @@ class WikiParser:
         return directors
         
 
-
 class TestRtParser(unittest.TestCase):
     def test_celebrity_scraper_01(self):
         celebrity_scraper = CelebrityScraper(celebrity_name='jack nicholson')
@@ -62,7 +61,7 @@ class TestRtParser(unittest.TestCase):
         celebrity_scraper = CelebrityScraper(celebrity_name=actresses[2])
         celebrity_scraper.extract_metadata(section='highest')
         movie_titles = celebrity_scraper.metadata['movie_titles']
-        self.assertIn('Manhattan', movie_titles)
+        self.assertIn('The Disaster Artist', movie_titles)
 
     def test_movie_scraper_01(self):
         movie_scraper = MovieScraper(movie_title='Manhattan')
