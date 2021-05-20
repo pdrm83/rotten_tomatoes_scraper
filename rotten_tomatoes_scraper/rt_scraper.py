@@ -3,6 +3,7 @@ import difflib
 import re
 import requests
 from urllib.request import urlopen
+from collections import defaultdict
 
 
 class RTScraper:
