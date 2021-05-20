@@ -127,7 +127,7 @@ class CelebrityScraper(RTScraper):
         selected_section = []
         try:
             if section == 'highest':
-                selected_section = soup.find_all('div', class_='posters-container')[0].text.split('\n')
+                selected_section = soup.find_all('section', class_='dynamic-poster-list')[0].text.split('\n')
             elif section == 'filmography':
                 selected_section = soup.find_all('tbody', class_='celebrity-filmography__tbody')[0]
         except IOError:
@@ -142,6 +142,7 @@ class CelebrityScraper(RTScraper):
             for i in range(len(selected_section)):
                 if selected_section[i].strip():
                     movie_titles.append(selected_section[i].strip())
+            movie_titles.remove('Highest rated movies')
         elif section == 'filmography':
             soup_filmography = BeautifulSoup(str(selected_section), 'lxml')
             for h in soup_filmography.find_all('a'):
@@ -149,7 +150,8 @@ class CelebrityScraper(RTScraper):
                     movie_titles.append(h.text.strip())
                 except IOError:
                     pass
-        self.metadata['movie_titles'] = movie_titles
+
+        self.metadata['movie_titles'] = list(set(movie_titles))
     
     
 class DirectorScraper(RTScraper):
