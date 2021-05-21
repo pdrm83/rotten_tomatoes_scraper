@@ -61,8 +61,33 @@ print(movie_scraper.metadata)
 {'Score_Rotten': '94', 'Score_Audience': '85', 'Genre': ['comedy', 'drama']}
 ```
 &nbsp;
-- **DirectorScraper**:
-WIP
+- **DirectorScraper**: You can use this class to extract metadata of directors. You can feed `director_url` 
+or `director_name` to extract the director metadata.
+
+```python
+from rotten_tomatoes_scraper.rt_scraper import DirectorScraper
+
+director_url = 'https://www.rottentomatoes.com/celebrity/steven_spielberg'
+director_scraper = DirectorScraper(director_url=director_url)
+director_scraper.extract_metadata()
+
+print(director_scraper.metadata['Jaws'])
+{'Year': '1975', 'Score_Rotten': '98', 'Box_Office': '260870000'}
+```
+
+```python
+from rotten_tomatoes_scraper.rt_scraper import DirectorScraper
+
+director_scraper = DirectorScraper(director_name='stanley kubrick')
+director_scraper.extract_metadata()
+movie_titles = list(director_scraper.metadata.keys())
+
+print(movie_titles)
+['Eyes Wide Shut', 'Full Metal Jacket', 'The Shining', 'Barry Lyndon', 'A Clockwork Orange', '2001: A Space Odyssey', 
+ 'Dr. Strangelove Or: How I Learned to Stop Worrying and Love the Bomb', 'Lolita', 'Spartacus', 'Paths of Glory', 
+ 'The Killing', "Killer's Kiss", 'The Seafarers', 'Fear and Desire', 'Day of the Fight', 'Flying Padre']
+
+```
 
 This module doesn't give you a full access to all the metadata that you may find in Rotten Tomatoes website. However,
 you can easily use it to extract the most important ones.

@@ -35,7 +35,7 @@ class WikiParser:
         url_directors = 'https://en.wikipedia.org/wiki/Category:American_film_directors'
         page_directors = urlopen(url_directors)
         soup = BeautifulSoup(page_directors, "lxml")
-        first_link = soup.find('a', {'title':'Category:American film directors'}) 
+        first_link = soup.find('a', {'title': 'Category:American film directors'})
         data = first_link.find_next('div', class_='mw-category-group') 
         directors = data.text.split('\n')
         directors = [re.sub(r'\s\([^)]*\)', '', director) for director in directors[1:]]
@@ -85,25 +85,26 @@ class TestRtParser(unittest.TestCase):
     def test_movie_scraper_04(self):
         movie_scraper = MovieScraper(movie_title='Vicky Cristina Barcelona')
         movie_scraper.extract_metadata()
-        print(movie_scraper.metadata)
+        self.assertEqual(movie_scraper.metadata['Score_Rotten'], '81')
 
     def test_director_scraper_01(self):
         director_scraper = DirectorScraper(director_name='stanley kubrick')
         director_scraper.extract_metadata()
-        movie_titles = director_scraper.metadata.keys()
+        movie_titles = list(director_scraper.metadata.keys())
         self.assertIn('Eyes Wide Shut', movie_titles)
         
     def test_director_scraper_02(self):
-        director_scraper = DirectorScraper(director_url='https://www.rottentomatoes.com/celebrity/steve_spielberg')
+        director_url = 'https://www.rottentomatoes.com/celebrity/steven_spielberg'
+        director_scraper = DirectorScraper(director_url=director_url)
         director_scraper.extract_metadata()
-        movie_titles = director_scraper.metadata.keys()
+        movie_titles = list(director_scraper.metadata.keys())
         self.assertIn('Jaws', movie_titles)
         
     def test_director_scraper_03(self):
         wiki_parser = WikiParser()
         directors = wiki_parser.extract_directors_names()
         director = directors[directors.index('Kent Alterman')]
-        director_scraper = DirectorScraper(director_name = director)
+        director_scraper = DirectorScraper(director_name=director)
         director_scraper.extract_metadata()
         movie_titles = director_scraper.metadata.keys()
         self.assertIn('Semi-Pro', movie_titles)
