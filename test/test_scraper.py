@@ -48,7 +48,7 @@ class TestRtParser(unittest.TestCase):
         celebrity_scraper.extract_metadata(section='filmography')
         movie_titles = celebrity_scraper.metadata['movie_titles']
         self.assertIn('The Departed', movie_titles)
-    
+        
     def test_celebrity_scraper_02(self):
         celebrity_scraper = CelebrityScraper(celebrity_name='meryl streep')
         celebrity_scraper.extract_metadata(section='highest')
