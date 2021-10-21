@@ -11,16 +11,6 @@ class WikiParser:
         pass
 
     @staticmethod
-    def extract_actresses_names():
-        url_actresses = 'https://en.wikipedia.org/wiki/Category:American_film_actresses'
-        page_actresses = urlopen(url_actresses)
-        soup = BeautifulSoup(page_actresses, "lxml")
-        data = soup.find_all('div', class_='mw-category-group')
-        actresses = data[9].text.split('\n')
-        actresses = [re.sub(r'\s\([^)]*\)', '', actress) for actress in actresses[1:]]
-        return actresses
-
-    @staticmethod
     def extract_actors_names():
         url_actors = 'https://en.wikipedia.org/wiki/Category:American_male_film_actors'
         page_actors = urlopen(url_actors)
@@ -54,14 +44,7 @@ class TestRtParser(unittest.TestCase):
         celebrity_scraper.extract_metadata(section='highest')
         movie_titles = celebrity_scraper.metadata['movie_titles']
         self.assertIn('Manhattan', movie_titles)
-    
-    def test_celebrity_scraper_03(self):
-        wiki_parser = WikiParser()
-        actresses = wiki_parser.extract_actresses_names()
-        celebrity_scraper = CelebrityScraper(celebrity_name=actresses[2])
-        celebrity_scraper.extract_metadata(section='highest')
-        movie_titles = celebrity_scraper.metadata['movie_titles']
-    
+
     def test_movie_scraper_01(self):
         movie_scraper = MovieScraper(movie_title='Manhattan')
         movie_scraper.extract_metadata()
