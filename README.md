@@ -1,5 +1,3 @@
-[![license](https://img.shields.io/badge/license-MIT-success)](https://github.com/pdrm83/Rotten_Tomatoes_Scraper/blob/master/LICENSE)
-
 ⛔ [NOT SUPPORTED ANYMORE] ⛔
 
 # Rotten Tomatoes Scraper 
