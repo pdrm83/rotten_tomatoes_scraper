@@ -1,5 +1,7 @@
 [![license](https://img.shields.io/badge/license-MIT-success)](https://github.com/pdrm83/Rotten_Tomatoes_Scraper/blob/master/LICENSE)
 
+⛔ [NOT SUPPORTED ANYMORE] ⛔
+
 # Rotten Tomatoes Scraper 
 You can extract information about **movies** and **actors** that are listed on the Rotten Tomatoes website using this 
 module. Each movie has different metadata such as *Rating*, *Genre*, *Box Office*, *Studio*, and *Scores*. The 
